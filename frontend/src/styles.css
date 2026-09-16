@@ -1,0 +1,1 @@
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,Arial,sans-serif;background:#090d18;color:#f7f8fc}body{line-height:1.4}.container{width:min(1180px,calc(100% - 40px));margin-inline:auto}button,input,select{font:inherit}a{transition:.2s}::selection{background:#7c5cff;color:#fff}
