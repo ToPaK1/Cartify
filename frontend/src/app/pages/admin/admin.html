@@ -34,7 +34,7 @@
 
   <section class="panel products-panel">
     <div class="panel-title split"><div><span class="eyebrow">CATALOG</span><h2>Products</h2></div><span class="count">{{products().length}} shown</span></div>
-    @if(!products().length){<p class="muted">No products yet.</p>}@else{<div class="product-table"><div class="product-row labels"><span>Product</span><span>Category</span><span>Price</span><span>Stock</span><span>Actions</span></div>@for(p of products();track p.id){<div class="product-row"><span class="product-name">@if(p.image){<img [src]="p.image" [alt]="p.name">}<b>{{p.name}}</b><small>{{p.brand||'—'}}</small></span><span>{{p.category_name||'Uncategorized'}}</span><strong>EGP {{p.price|number}}</strong><span [class.low]="p.stock<=5">{{p.stock}}</span><span class="actions-cell"><button class="link-btn" (click)="editProduct(p)">Edit</button><button class="delete-btn" (click)="deleteProduct(p.id)">Delete</button></span></div>}}</div>}
+    @if(!products().length){<p class="muted">No products yet.</p>}@else{<div class="product-table"><div class="product-row labels"><span>Product</span><span>Category</span><span>Price</span><span>Stock</span><span>Actions</span></div>@for(p of products();track p.id){<div class="product-row"><span class="product-name">@if(p.image){<img [src]="p.image" [alt]="p.name">}<b>{{p.name}}</b><small>{{p.brand||'—'}}</small></span><span>{{p.category_name||'Uncategorized'}}</span><strong>EGP {{p.price|number}}</strong><span [class.low]="p.stock<=5">{{p.stock}}</span><span class="actions-cell"><button class="link-btn" (click)="editProduct(p)">Edit</button><button class="delete-btn" (click)="deleteProduct(p.id)">Delete</button></span></div>}</div>}
   </section>
 
   <section class="grid">
