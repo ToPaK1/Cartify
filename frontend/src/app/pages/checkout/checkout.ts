@@ -18,17 +18,51 @@ export class Checkout {
 
   loading = signal(false);
   error = '';
+  paymentMethod = signal<'COD' | 'MockCard'>('COD');
 
   form = this.fb.nonNullable.group({
     full_name: ['', [Validators.required, Validators.minLength(2)]],
     phone: ['', [Validators.required]],
     address: ['', [Validators.required, Validators.minLength(8)]],
     city: ['', [Validators.required]],
-    governorate: ['Cairo', [Validators.required]]
+    governorate: ['Cairo', [Validators.required]],
+    card_number: [''],
+    card_name: [''],
+    expiry: [''],
+    cvv: ['']
   });
 
+  selectPayment(method: 'COD' | 'MockCard'): void {
+    this.paymentMethod.set(method);
+
+    const cardNumber = this.form.controls.card_number;
+    const cardName = this.form.controls.card_name;
+    const expiry = this.form.controls.expiry;
+    const cvv = this.form.controls.cvv;
+
+    if (method === 'MockCard') {
+      cardNumber.setValidators([Validators.required, Validators.pattern(/^[0-9]{16}$/)]);
+      cardName.setValidators([Validators.required, Validators.minLength(2)]);
+      expiry.setValidators([Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/([0-9]{2})$/)]);
+      cvv.setValidators([Validators.required, Validators.pattern(/^[0-9]{3,4}$/)]);
+    } else {
+      cardNumber.clearValidators();
+      cardName.clearValidators();
+      expiry.clearValidators();
+      cvv.clearValidators();
+    }
+
+    cardNumber.updateValueAndValidity();
+    cardName.updateValueAndValidity();
+    expiry.updateValueAndValidity();
+    cvv.updateValueAndValidity();
+  }
+
   submit(): void {
-    if (this.form.invalid || this.loading()) return;
+    if (this.form.invalid || this.loading()) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
     this.loading.set(true);
     this.error = '';
@@ -51,7 +85,7 @@ export class Checkout {
 
         this.http.post<{ success: boolean; message?: string }>(`${this.api}/orders`, {
           address_id: addressId,
-          payment_method: 'COD'
+          payment_method: this.paymentMethod()
         }).subscribe({
           next: () => this.router.navigate(['/orders']),
           error: error => {
