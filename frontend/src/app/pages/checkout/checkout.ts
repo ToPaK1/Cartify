@@ -26,32 +26,27 @@ export class Checkout {
     phone: ['', [Validators.required]],
     address: ['', [Validators.required, Validators.minLength(8)]],
     city: ['', [Validators.required]],
-    governorate: ['Cairo', [Validators.required]],
-    card_number: [''],
-    card_name: [''],
-    expiry: [''],
-    cvv: ['']
+    governorate: ['Cairo', [Validators.required]]
   });
 
   constructor() {
     this.route.queryParamMap.subscribe(params => {
       const payment = params.get('payment');
       const sessionId = params.get('session_id');
-      if (payment === 'cancelled') this.error = 'Card payment was cancelled. You can try again or choose Cash on Delivery.';
-      if (payment === 'success' && sessionId) this.verifyCardPayment(sessionId);
+
+      if (payment === 'cancelled') {
+        this.error = 'Card payment was cancelled. You can try again or choose Cash on Delivery.';
+      }
+
+      if (payment === 'success' && sessionId) {
+        this.verifyCardPayment(sessionId);
+      }
     });
   }
 
   selectPayment(method: 'COD' | 'CARD'): void {
     this.paymentMethod.set(method);
-    const controls = [this.form.controls.card_number, this.form.controls.card_name, this.form.controls.expiry, this.form.controls.cvv];
-    if (method === 'CARD') {
-      controls[0].setValidators([Validators.required]);
-      controls[1].setValidators([Validators.required, Validators.minLength(2)]);
-      controls[2].setValidators([Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/([0-9]{2})$/)]);
-      controls[3].setValidators([Validators.required, Validators.pattern(/^[0-9]{3,4}$/)]);
-    } else controls.forEach(control => control.clearValidators());
-    controls.forEach(control => control.updateValueAndValidity());
+    this.error = '';
   }
 
   submit(): void {
@@ -59,6 +54,7 @@ export class Checkout {
       this.form.markAllAsTouched();
       return;
     }
+
     this.loading.set(true);
     this.error = '';
     const value = this.form.getRawValue();
@@ -72,40 +68,65 @@ export class Checkout {
     }).subscribe({
       next: addressResponse => {
         const addressId = addressResponse.address?.id;
+
         if (!addressId) {
           this.error = 'Could not save your delivery address.';
           this.loading.set(false);
           return;
         }
+
         if (this.paymentMethod() === 'COD') {
-          this.http.post(`${this.api}/orders`, { address_id: addressId, payment_method: 'COD' }).subscribe({
+          this.http.post(`${this.api}/orders`, {
+            address_id: addressId,
+            payment_method: 'COD'
+          }).subscribe({
             next: () => this.router.navigate(['/orders']),
-            error: error => { this.error = error.error?.message || 'Could not place order.'; this.loading.set(false); }
+            error: error => {
+              this.error = error.error?.message || 'Could not place order.';
+              this.loading.set(false);
+            }
           });
           return;
         }
-        this.http.post<{ success: boolean; checkout_url?: string; message?: string }>(`${this.api}/payments/create-checkout-session`, { address_id: addressId }).subscribe({
+
+        this.http.post<{ success: boolean; checkout_url?: string; message?: string }>(
+          `${this.api}/payments/create-checkout-session`,
+          { address_id: addressId }
+        ).subscribe({
           next: response => {
             if (!response.checkout_url) {
               this.error = response.message || 'Could not start card payment.';
               this.loading.set(false);
               return;
             }
+
             window.location.href = response.checkout_url;
           },
-          error: error => { this.error = error.error?.message || 'Could not start card payment.'; this.loading.set(false); }
+          error: error => {
+            this.error = error.error?.message || 'Could not start card payment.';
+            this.loading.set(false);
+          }
         });
       },
-      error: error => { this.error = error.error?.message || 'Could not save your delivery address.'; this.loading.set(false); }
+      error: error => {
+        this.error = error.error?.message || 'Could not save your delivery address.';
+        this.loading.set(false);
+      }
     });
   }
 
   private verifyCardPayment(sessionId: string): void {
     this.loading.set(true);
     this.error = '';
-    this.http.get<{ success: boolean; message?: string }>(`${this.api}/payments/verify/${encodeURIComponent(sessionId)}`).subscribe({
+
+    this.http.get<{ success: boolean; message?: string; order?: unknown }>(
+      `${this.api}/payments/verify/${encodeURIComponent(sessionId)}`
+    ).subscribe({
       next: () => this.router.navigate(['/orders']),
-      error: error => { this.error = error.error?.message || 'We could not verify the card payment.'; this.loading.set(false); }
+      error: error => {
+        this.error = error.error?.message || 'We could not verify the card payment.';
+        this.loading.set(false);
+      }
     });
   }
 }
