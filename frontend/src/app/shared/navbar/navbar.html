@@ -1,17 +1,17 @@
 <header class="nav-wrap">
   <nav class="navbar container">
-    <a routerLink="/" class="brand"><span class="brand-mark">C</span> Cartify</a>
+    <a routerLink="/" class="brand">CARTIFY</a>
     <div class="links">
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Home</a>
       <a routerLink="/products" routerLinkActive="active">Shop</a>
       @if (auth.user(); as user) {
-        <a routerLink="/cart" routerLinkActive="active">Cart</a>
+        <a routerLink="/cart" routerLinkActive="active">Bag</a>
         <a routerLink="/orders" routerLinkActive="active">Orders</a>
         @if (user.role === 'admin') { <a routerLink="/admin" routerLinkActive="active">Admin</a> }
         <button class="user-btn" (click)="auth.logout()">{{ user.name }} · Logout</button>
       } @else {
         <a routerLink="/login" routerLinkActive="active">Login</a>
-        <a routerLink="/signup" class="nav-cta">Get Started</a>
+        <a routerLink="/signup" class="nav-cta">Create account</a>
       }
     </div>
   </nav>
