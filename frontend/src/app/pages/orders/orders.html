@@ -1,0 +1,44 @@
+<main class="orders-page container">
+  <div class="intro">
+    <span class="eyebrow">CARTIFY / ORDERS</span>
+    <h1>Your orders.</h1>
+    <p>Everything you’ve purchased, in one place.</p>
+  </div>
+
+  @if (loading()) {
+    <div class="state">Loading your orders…</div>
+  } @else if (error()) {
+    <div class="state error">{{ error() }}</div>
+  } @else if (orders().length === 0) {
+    <div class="empty">
+      <span class="eyebrow">NO ORDERS YET</span>
+      <h2>Your first order starts here.</h2>
+      <a routerLink="/products">Explore the collection →</a>
+    </div>
+  } @else {
+    <div class="order-list">
+      @for (order of orders(); track order.id) {
+        <article class="order-card">
+          <div class="order-top">
+            <div>
+              <span class="eyebrow">ORDER #{{ order.id }}</span>
+              <h2>{{ order.created_at | date:'dd MMM yyyy' }}</h2>
+            </div>
+            <span class="status" [class.cancelled]="order.status === 'Cancelled'">{{ order.status }}</span>
+          </div>
+
+          <div class="order-details">
+            <div><span>Subtotal</span><strong>EGP {{ order.subtotal | number }}</strong></div>
+            <div><span>Shipping</span><strong>{{ order.shipping_fee === 0 ? 'Free' : 'EGP ' + (order.shipping_fee | number) }}</strong></div>
+            <div><span>Payment</span><strong>{{ order.payment_method }}</strong></div>
+            <div class="grand"><span>Total</span><strong>EGP {{ order.total | number }}</strong></div>
+          </div>
+
+          @if (order.status !== 'Cancelled' && order.status !== 'Delivered') {
+            <button class="cancel" type="button" (click)="cancel(order.id)">Cancel order</button>
+          }
+        </article>
+      }
+    </div>
+  }
+</main>
