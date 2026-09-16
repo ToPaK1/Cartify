@@ -1,42 +1,50 @@
 # Cartify Backend
 
-REST API backend for the Cartify E-Commerce application.
+REST API for the Cartify e-commerce application.
 
 ## Stack
 - Node.js
 - Express.js
 - SQLite + better-sqlite3
 - JWT authentication
-- bcryptjs password hashing
+- bcrypt password hashing
 
 ## Setup
-
 ```bash
 cd backend
 npm install
 npm run db:init
 ```
+Create `.env` from `.env.example` and set a strong `JWT_SECRET`.
 
-Create `.env` from `.env.example`, then run:
-
+Start:
 ```bash
 npm run dev
 ```
-
 API: `http://localhost:3000`
+Health: `GET /api/health`
 
-Health check: `GET /api/health`
+## Admin
+```bash
+npm run admin:create -- "Cartify Admin" "admin@cartify.com" "YourStrongPassword"
+```
 
-## Authentication
-- `POST /api/auth/signup`
-- `POST /api/auth/login`
-- `GET /api/auth/me` (Bearer token required)
+## API
+- Auth: signup, login, me
+- Categories: list/create/update/delete
+- Products: list/details/create/update/delete with search, filters, sorting and pagination
+- Cart: get/add/update/remove/clear
+- Wishlist: get/add/remove
+- Addresses: get/create/delete
+- Orders: checkout, list, details, cancel
+- Reviews: list/create-or-update
+- Admin: statistics, users, roles, order management
 
-## Products
-- `GET /api/products`
-- `GET /api/products/:id`
-- `POST /api/products` (admin)
-- `PUT /api/products/:id` (admin)
-- `DELETE /api/products/:id` (admin)
+## Business rules
+- Customer is the default role; admin endpoints require JWT + admin role.
+- Payment methods: COD and MockCard.
+- Shipping is free for subtotal >= 1000, otherwise 60.
+- Checkout validates stock, decrements stock transactionally and clears the cart.
+- Eligible order cancellation restores stock.
 
-Product listing supports search, category, brand, price range, sorting and pagination.
+Never commit `.env`, database files, uploads, or real credentials.
