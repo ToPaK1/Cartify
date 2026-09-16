@@ -6,6 +6,8 @@ import { ProductDetails } from './pages/product-details/product-details';
 import { Login } from './pages/login/login';
 import { Signup } from './pages/signup/signup';
 import { Cart } from './pages/cart/cart';
+import { Checkout } from './pages/checkout/checkout';
+import { Orders } from './pages/orders/orders';
 import { NotFound } from './pages/not-found/not-found';
 
 export const routes: Routes = [
@@ -15,5 +17,7 @@ export const routes: Routes = [
   { path: 'login', component: Login },
   { path: 'signup', component: Signup },
   { path: 'cart', component: Cart, canActivate: [authGuard] },
+  { path: 'checkout', component: Checkout, canActivate: [authGuard] },
+  { path: 'orders', component: Orders, canActivate: [authGuard] },
   { path: '**', component: NotFound }
 ];
