@@ -1,1 +1,73 @@
-<main class="checkout-page container"><div class="intro"><span class="eyebrow">CARTIFY / CHECKOUT</span><h1>Complete your order.</h1><p>Enter your delivery details and we’ll take care of the rest.</p></div><div class="checkout-layout"><form class="form-card" [formGroup]="form" (ngSubmit)="submit()"><label>Full name<input formControlName="full_name" placeholder="Your full name"></label><label>Phone<input formControlName="phone" placeholder="01xxxxxxxxx"></label><label>Address<textarea formControlName="address" rows="4" placeholder="Street, building and apartment"></textarea></label><label>City<input formControlName="city" placeholder="Cairo"></label>@if(error){<div class="error">{{error}}</div>}<button class="submit" type="submit" [disabled]="loading() || form.invalid">{{loading() ? 'PLACING ORDER…' : 'PLACE ORDER →'}}</button></form><aside><span class="eyebrow">SECURE CHECKOUT</span><h2>Ready when you are.</h2><p>Your cart items will be converted into an order using the current prices and stock.</p><a routerLink="/cart">← BACK TO BAG</a></aside></div></main>
+<main class="checkout-page container">
+  <div class="intro">
+    <span class="eyebrow">CARTIFY / CHECKOUT</span>
+    <h1>Complete your order.</h1>
+    <p>Enter your delivery details and choose how you want to pay.</p>
+  </div>
+
+  <div class="checkout-layout">
+    <form class="form-card" [formGroup]="form" (ngSubmit)="submit()">
+      <section class="section">
+        <span class="section-title">01 / DELIVERY DETAILS</span>
+        <div class="fields">
+          <label>Full name<input formControlName="full_name" placeholder="Your full name"></label>
+          <label>Phone<input formControlName="phone" placeholder="01xxxxxxxxx"></label>
+          <label class="full">Address<textarea formControlName="address" rows="4" placeholder="Street, building and apartment"></textarea></label>
+          <label>City<input formControlName="city" placeholder="Cairo"></label>
+          <label>Governorate<input formControlName="governorate" placeholder="Cairo"></label>
+        </div>
+      </section>
+
+      <section class="section payment-section">
+        <span class="section-title">02 / PAYMENT METHOD</span>
+
+        <div class="payment-options">
+          <button type="button" class="payment-option" [class.selected]="paymentMethod() === 'COD'" (click)="selectPayment('COD')">
+            <span class="radio">{{ paymentMethod() === 'COD' ? '●' : '○' }}</span>
+            <span><strong>Cash on Delivery</strong><small>Pay when your order arrives</small></span>
+          </button>
+
+          <button type="button" class="payment-option" [class.selected]="paymentMethod() === 'MockCard'" (click)="selectPayment('MockCard')">
+            <span class="radio">{{ paymentMethod() === 'MockCard' ? '●' : '○' }}</span>
+            <span><strong>Pay with Card</strong><small>Card checkout for demo/testing</small></span>
+          </button>
+        </div>
+
+        @if (paymentMethod() === 'MockCard') {
+          <div class="card-fields">
+            <label class="full">Card number
+              <input formControlName="card_number" inputmode="numeric" maxlength="16" placeholder="1234 5678 9012 3456">
+            </label>
+            <label class="full">Name on card
+              <input formControlName="card_name" placeholder="CARDHOLDER NAME">
+            </label>
+            <label>Expiry date
+              <input formControlName="expiry" maxlength="5" placeholder="MM/YY">
+            </label>
+            <label>CVV
+              <input formControlName="cvv" inputmode="numeric" maxlength="4" placeholder="123">
+            </label>
+          </div>
+          <p class="demo-note">Demo card payment: no real charge is made.</p>
+        }
+      </section>
+
+      @if(error){<div class="error">{{error}}</div>}
+
+      <button class="submit" type="submit" [disabled]="loading() || form.invalid">
+        {{ loading() ? 'PLACING ORDER…' : (paymentMethod() === 'COD' ? 'PLACE COD ORDER →' : 'PAY WITH CARD →') }}
+      </button>
+    </form>
+
+    <aside>
+      <span class="eyebrow">SECURE CHECKOUT</span>
+      <h2>Ready when you are.</h2>
+      <p>Your cart items will be converted into an order using the current prices and stock.</p>
+      <div class="payment-summary">
+        <span>PAYMENT</span>
+        <strong>{{ paymentMethod() === 'COD' ? 'Cash on Delivery' : 'Card' }}</strong>
+      </div>
+      <a routerLink="/cart">← BACK TO BAG</a>
+    </aside>
+  </div>
+</main>
