@@ -8,8 +8,8 @@ import { Signup } from './pages/signup/signup';
 import { Cart } from './pages/cart/cart';
 import { Checkout } from './pages/checkout/checkout';
 import { Orders } from './pages/orders/orders';
+import { Admin } from './pages/admin/admin';
 import { NotFound } from './pages/not-found/not-found';
-
 export const routes: Routes = [
   { path: '', component: Home },
   { path: 'products', component: Products },
@@ -19,5 +19,6 @@ export const routes: Routes = [
   { path: 'cart', component: Cart, canActivate: [authGuard] },
   { path: 'checkout', component: Checkout, canActivate: [authGuard] },
   { path: 'orders', component: Orders, canActivate: [authGuard] },
+  { path: 'admin', component: Admin, canActivate: [authGuard] },
   { path: '**', component: NotFound }
 ];
