@@ -1,3 +1,50 @@
-<section class="hero"><div class="container hero-grid"><div><span class="eyebrow">THE NEW WAY TO SHOP</span><h1>Everything you want.<br><span>One Cart.</span></h1><p>Discover products you love, compare prices, and checkout in seconds with Cartify.</p><a routerLink="/products" class="hero-btn">Explore Store →</a></div><div class="hero-card"><div class="orb"></div><div class="hero-stat"><b>5★</b><span>Curated categories</span></div></div></div></section>
-<section class="section container"><div class="section-head"><div><span class="eyebrow">BROWSE</span><h2>Shop by category</h2></div><a routerLink="/products">View all →</a></div><div class="categories">@for(category of categories(); track category.id){<a class="category" [routerLink]="['/products']" [queryParams]="{category: category.id}"><span>{{ category.name }}</span><b>→</b></a>}</div></section>
-<section class="section container"><div class="section-head"><div><span class="eyebrow">CURATED FOR YOU</span><h2>Featured products</h2></div><a routerLink="/products">Shop all →</a></div>@if(loading()){<div class="loading">Loading products…</div>}@else{<div class="products">@for(product of products(); track product.id){<a class="product" [routerLink]="['/products', product.id]"><div class="image"><img [src]="product.image || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30'" [alt]="product.name"></div><small>{{product.brand}}</small><h3>{{product.name}}</h3><div class="price">EGP {{product.price | number}}</div></a>}</div>}</section>
+<main class="home">
+  <section class="hero">
+    <img class="hero-image" src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=2200&q=90" alt="Cartify collection">
+    <div class="hero-overlay"></div>
+    <div class="hero-content container">
+      <span class="eyebrow">CARTIFY / AUTUMN COLLECTION</span>
+      <h1>Everyday objects.<br><em>Beautifully chosen.</em></h1>
+      <p>A considered collection of things made to be used, loved and kept.</p>
+      <a routerLink="/products" class="hero-link">SHOP THE COLLECTION <span>→</span></a>
+    </div>
+  </section>
+
+  <section class="intro container">
+    <span class="eyebrow">THE CARTIFY EDIT</span>
+    <h2>Less noise. Better things.</h2>
+    <p>Discover six carefully selected worlds, from technology and fashion to the pieces that make home feel like yours.</p>
+  </section>
+
+  <section class="categories container">
+    @for(category of categories(); track category.id; let i = $index) {
+      <a class="category" [routerLink]="['/products']" [queryParams]="{category: category.id}">
+        <span class="number">0{{ i + 1 }}</span>
+        <div><h3>{{ category.name }}</h3><span>Explore collection →</span></div>
+      </a>
+    }
+  </section>
+
+  <section class="feature container">
+    <div class="feature-copy"><span class="eyebrow">NEW SEASON</span><h2>Objects with a purpose.</h2><p>From everyday essentials to statement pieces, find products that earn their place.</p><a routerLink="/products">DISCOVER MORE →</a></div>
+    <div class="feature-image"><img src="https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?auto=format&fit=crop&w=1400&q=85" alt="New season collection"></div>
+  </section>
+
+  <section class="products-section container">
+    <div class="section-head"><div><span class="eyebrow">SELECTED PIECES</span><h2>New arrivals</h2></div><a routerLink="/products">VIEW ALL →</a></div>
+    @if(loading()) { <div class="loading">Loading collection…</div> }
+    @else {
+      <div class="products">
+        @for(product of products(); track product.id) {
+          <a class="product" [routerLink]="['/products', product.id]">
+            <div class="product-image"><img [src]="product.image || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1000&q=85'" [alt]="product.name"></div>
+            <div class="product-meta"><span>{{ product.brand }}</span><span>EGP {{ product.price | number }}</span></div>
+            <h3>{{ product.name }}</h3>
+          </a>
+        }
+      </div>
+    }
+  </section>
+
+  <section class="statement"><div class="container"><span class="eyebrow">CARTIFY</span><h2>Good design should<br><em>feel effortless.</em></h2><a routerLink="/products">EXPLORE CARTIFY →</a></div></section>
+</main>
