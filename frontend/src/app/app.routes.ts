@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
+import { adminGuard } from './core/guards/admin.guard';
 import { Home } from './pages/home/home';
 import { Products } from './pages/products/products';
 import { ProductDetails } from './pages/product-details/product-details';
@@ -19,6 +20,6 @@ export const routes: Routes = [
   { path: 'cart', component: Cart, canActivate: [authGuard] },
   { path: 'checkout', component: Checkout, canActivate: [authGuard] },
   { path: 'orders', component: Orders, canActivate: [authGuard] },
-  { path: 'admin', component: Admin, canActivate: [authGuard] },
+  { path: 'admin', component: Admin, canActivate: [authGuard, adminGuard] },
   { path: '**', component: NotFound }
 ];
