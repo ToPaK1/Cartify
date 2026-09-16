@@ -5,6 +5,7 @@ const path = require('path');
 const fs = require('fs');
 const db = require('./config/database');
 const storeRoutes = require('./routes/storeRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -24,6 +25,7 @@ app.get('/api/health', (req, res) => {
 });
 
 app.use('/api', storeRoutes);
+app.use('/api/admin', adminRoutes);
 
 app.use((req, res) => res.status(404).json({ success: false, message: 'Route not found' }));
 app.use((err, req, res, next) => {
