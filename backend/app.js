@@ -6,10 +6,20 @@ const fs = require('fs');
 const db = require('./config/database');
 require('./database/seedProducts');
 const storeRoutes = require('./routes/storeRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Idempotency records for successful Stripe Checkout sessions.
+db.exec(`CREATE TABLE IF NOT EXISTS payment_transactions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  payment_reference TEXT NOT NULL UNIQUE,
+  order_id INTEGER NOT NULL,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY(order_id) REFERENCES orders(id) ON DELETE CASCADE
+)`);
 
 app.use(cors());
 app.use(express.json({ limit: '2mb' }));
@@ -26,6 +36,7 @@ app.get('/api/health', (req, res) => {
 });
 
 app.use('/api', storeRoutes);
+app.use('/api/payments', paymentRoutes);
 app.use('/api/admin', adminRoutes);
 
 app.use((req, res) => res.status(404).json({ success: false, message: 'Route not found' }));
