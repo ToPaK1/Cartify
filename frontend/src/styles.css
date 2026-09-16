@@ -1,4 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+
 *{box-sizing:border-box}
-:root{--bg:#0b1220;--surface:#111a2e;--surface-2:#17233a;--text:#f8fafc;--muted:#a8b4c7;--primary:#22c1c3;--primary-dark:#159a9c;--accent:#ffb547;--border:rgba(255,255,255,.09)}
-html,body{margin:0;min-height:100%;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
-body{line-height:1.5}button,input,select{font:inherit}a{transition:.2s}::selection{background:var(--primary);color:#061014}
+:root{--ink:#171717;--muted:#77736d;--paper:#f7f5f0;--white:#fff;--line:#ddd9d1;--soft:#eeeae2;--accent:#b58a5a}
+html,body{margin:0;min-height:100%;font-family:'DM Sans',Arial,sans-serif;background:var(--paper);color:var(--ink)}
+body{line-height:1.5}button,input,select{font:inherit}a{color:inherit;transition:all .25s ease}::selection{background:var(--ink);color:var(--paper)}
+.container{width:min(1320px,calc(100% - 48px));margin-inline:auto}
+.page-shell{min-height:calc(100vh - 160px)}
+.eyebrow{font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+@media(max-width:700px){.container{width:min(100% - 28px,1320px)}}
