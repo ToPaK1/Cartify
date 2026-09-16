@@ -32,7 +32,8 @@ export class Admin implements OnInit {
   saveProduct(){
     const p=this.productForm;
     if(!p.name?.trim() || p.price===undefined || Number(p.price)<0){this.message='Product name and a valid price are required.';return;}
-    const body={category_id:p.category_id||null,name:p.name.trim(),description:p.description||'',brand:p.brand||'',price:Number(p.price),old_price:p.old_price===null||p.old_price===undefined||p.old_price===''?null:Number(p.old_price),stock:Number(p.stock)||0,rating:Number(p.rating)||0,image:p.image||null};
+    const oldPrice = p.old_price === null || p.old_price === undefined ? null : Number(p.old_price);
+    const body={category_id:p.category_id||null,name:p.name.trim(),description:p.description||'',brand:p.brand||'',price:Number(p.price),old_price:oldPrice,stock:Number(p.stock)||0,rating:Number(p.rating)||0,image:p.image||null};
     const request=this.editingId===null ? this.http.post(`${this.api}/products`,body) : this.http.put(`${this.api}/products/${this.editingId}`,body);
     request.subscribe({next:()=>{this.message=this.editingId===null?'Product added successfully.':'Product updated successfully.';this.resetProduct();this.load();},error:e=>this.message=e.error?.message||'Could not save product.'});
   }
