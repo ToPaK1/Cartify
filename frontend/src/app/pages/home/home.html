@@ -3,48 +3,53 @@
     <img class="hero-image" src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=2200&q=90" alt="Cartify collection">
     <div class="hero-overlay"></div>
     <div class="hero-content container">
-      <span class="eyebrow">CARTIFY / AUTUMN COLLECTION</span>
-      <h1>Everyday objects.<br><em>Beautifully chosen.</em></h1>
-      <p>A considered collection of things made to be used, loved and kept.</p>
-      <a routerLink="/products" class="hero-link">SHOP THE COLLECTION <span>→</span></a>
+      <span class="eyebrow">THE CARTIFY EDIT / 2026</span>
+      <h1>Shop better.<br><em>Live beautifully.</em></h1>
+      <p>Curated essentials, statement pieces and everyday favorites — all in one place.</p>
+      <div class="hero-actions"><a routerLink="/products" class="primary-btn">Shop collection <span>→</span></a><a routerLink="/products" class="secondary-btn">Explore new arrivals</a></div>
     </div>
+    <div class="hero-scroll">SCROLL TO EXPLORE ↓</div>
   </section>
 
+  <section class="trust-bar"><div class="container trust-items"><span>✓ Secure payments</span><span>✓ Fast delivery</span><span>✓ Easy returns</span><span>✓ Curated products</span></div></section>
+
   <section class="intro container">
-    <span class="eyebrow">THE CARTIFY EDIT</span>
-    <h2>Less noise. Better things.</h2>
-    <p>Discover six carefully selected worlds, from technology and fashion to the pieces that make home feel like yours.</p>
+    <span class="eyebrow">SHOP BY CATEGORY</span>
+    <h2>Find your next favorite.</h2>
+    <p>From tech and fashion to home essentials, discover collections built around the way you shop today.</p>
   </section>
 
   <section class="categories container">
     @for(category of categories(); track category.id; let i = $index) {
-      <a class="category" [routerLink]="['/products']" [queryParams]="{category: category.id}">
-        <span class="number">0{{ i + 1 }}</span>
-        <div><h3>{{ category.name }}</h3><span>Explore collection →</span></div>
+      <a class="category" [class]="'category category-' + (i + 1)" [routerLink]="['/products']" [queryParams]="{category: category.id}">
+        <div class="category-art"><span>0{{ i + 1 }}</span></div>
+        <div class="category-copy"><h3>{{ category.name }}</h3><span>Shop the edit <b>→</b></span></div>
       </a>
     }
   </section>
 
   <section class="feature container">
-    <div class="feature-copy"><span class="eyebrow">NEW SEASON</span><h2>Objects with a purpose.</h2><p>From everyday essentials to statement pieces, find products that earn their place.</p><a routerLink="/products">DISCOVER MORE →</a></div>
     <div class="feature-image"><img src="https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?auto=format&fit=crop&w=1400&q=85" alt="New season collection"></div>
+    <div class="feature-copy"><span class="eyebrow">NEW SEASON</span><h2>Designed for your everyday.</h2><p>From everyday essentials to statement pieces, find products that earn their place.</p><a routerLink="/products" class="text-link">Discover the collection <span>↗</span></a></div>
   </section>
 
   <section class="products-section container">
-    <div class="section-head"><div><span class="eyebrow">SELECTED PIECES</span><h2>New arrivals</h2></div><a routerLink="/products">VIEW ALL →</a></div>
-    @if(loading()) { <div class="loading">Loading collection…</div> }
+    <div class="section-head"><div><span class="eyebrow">TRENDING NOW</span><h2>New arrivals</h2></div><a routerLink="/products" class="view-all">View all <span>→</span></a></div>
+    @if(loading()) { <div class="loading-grid"><span></span><span></span><span></span><span></span></div> }
     @else {
       <div class="products">
         @for(product of products(); track product.id) {
           <a class="product" [routerLink]="['/products', product.id]">
-            <div class="product-image"><img [src]="product.image || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1000&q=85'" [alt]="product.name"></div>
+            <div class="product-image"><span class="product-badge">NEW</span><button type="button" class="wishlist" aria-label="Add to wishlist">♡</button><img [src]="product.image || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1000&q=85'" [alt]="product.name"></div>
             <div class="product-meta"><span>{{ product.brand }}</span><span>EGP {{ product.price | number }}</span></div>
-            <h3>{{ product.name }}</h3>
+            <h3>{{ product.name }}</h3><span class="quick-add">Quick view →</span>
           </a>
         }
       </div>
     }
   </section>
 
-  <section class="statement"><div class="container"><span class="eyebrow">CARTIFY</span><h2>Good design should<br><em>feel effortless.</em></h2><a routerLink="/products">EXPLORE CARTIFY →</a></div></section>
+  <section class="promo container"><div><span class="eyebrow">CARTIFY MEMBERS</span><h2>More to love.<br><em>More to save.</em></h2><p>Sign up for early access, exclusive drops and special offers.</p></div><a routerLink="/signup" class="primary-btn dark">Join Cartify <span>→</span></a></section>
+
+  <section class="statement"><div class="container"><span class="eyebrow">CARTIFY</span><h2>Good products.<br><em>Good choices.</em></h2><a routerLink="/products">Explore Cartify →</a></div></section>
 </main>
