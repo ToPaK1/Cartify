@@ -1,11 +1,12 @@
 <header class="nav-wrap">
+  <div class="announcement">Free shipping on orders over EGP 1,500 <span>•</span> Secure checkout</div>
   <nav class="navbar container">
-    <a routerLink="/" class="brand">CARTIFY</a>
+    <a routerLink="/" class="brand" aria-label="Cartify home">CARTIFY</a>
+    <div class="search"><span>⌕</span><input type="search" placeholder="Search products..." aria-label="Search products"></div>
     <div class="links">
-      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Home</a>
       <a routerLink="/products" routerLinkActive="active">Shop</a>
       @if (auth.user(); as user) {
-        <a routerLink="/cart" routerLinkActive="active">Bag</a>
+        <a routerLink="/cart" routerLinkActive="active" class="icon-link">Bag <span>→</span></a>
         <a routerLink="/orders" routerLinkActive="active">Orders</a>
         @if (user.role === 'admin') { <a routerLink="/admin" routerLinkActive="active">Admin</a> }
         <button class="user-btn" (click)="auth.logout()">{{ user.name }} · Logout</button>
