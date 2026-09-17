@@ -2,7 +2,9 @@
   <div class="announcement">Free shipping on orders over EGP 1,500 <span>•</span> Secure checkout</div>
   <nav class="navbar container">
     <a routerLink="/" class="brand" aria-label="Cartify home">CARTIFY</a>
-    <div class="search"><span>⌕</span><input type="search" placeholder="Search products..." aria-label="Search products"></div>
+    <form class="search" (ngSubmit)="doSearch()">
+      <span>⌕</span><input name="search" [(ngModel)]="search" type="search" placeholder="Search products..." aria-label="Search products">
+    </form>
     <div class="links">
       <a routerLink="/products" routerLinkActive="active">Shop</a>
       @if (auth.user(); as user) {
@@ -14,6 +16,9 @@
         <a routerLink="/login" routerLinkActive="active">Login</a>
         <a routerLink="/signup" class="nav-cta">Create account</a>
       }
+      <button class="theme-btn" type="button" (click)="theme.toggle()" [attr.aria-label]="theme.darkMode() ? 'Switch to light mode' : 'Switch to dark mode'">
+        {{ theme.darkMode() ? '☀ Light' : '◐ Dark' }}
+      </button>
     </div>
   </nav>
 </header>
