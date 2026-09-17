@@ -11,7 +11,7 @@ export class Home implements OnInit {
   loading = signal(true);
 
   ngOnInit(): void {
-    this.productsService.getProducts({ limit: 4 }).subscribe({ next:r=>this.products.set(r.products ?? []), error:()=>this.loading.set(false), complete:()=>this.loading.set(false) });
+    this.productsService.getProducts({ limit: 8 }).subscribe({ next:r=>this.products.set(r.products ?? []), error:()=>this.loading.set(false), complete:()=>this.loading.set(false) });
     this.productsService.getCategories().subscribe({ next:r=>this.categories.set((r.categories ?? []).slice(0, 6)), error:()=>{} });
   }
 }
